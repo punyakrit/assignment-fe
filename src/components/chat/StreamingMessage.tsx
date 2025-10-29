@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Copy, RotateCcw, Edit, MoreVertical } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -68,13 +70,15 @@ export function StreamingMessage({
             )}
           </div>
           
-          <div className="prose prose-sm max-w-none dark:prose-invert">
-            <div className="whitespace-pre-wrap">
-              {displayedContent}
-              {isStreaming && (
-                <span className="inline-block w-2 h-4 bg-current animate-pulse ml-1" />
-              )}
-            </div>
+          <div className="prose prose-sm max-w-none dark:prose-invert whitespace-pre-wrap">
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm]}
+            >
+              {displayedContent || ''}
+            </ReactMarkdown>
+            {isStreaming && (
+              <span className="inline-block w-2 h-4 bg-current animate-pulse ml-1" />
+            )}
           </div>
 
           {artifacts.length > 0 && (

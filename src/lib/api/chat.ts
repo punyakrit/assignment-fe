@@ -1,7 +1,26 @@
 import { ChatMessage, Artifact } from '@/types';
 
 export const generateStreamingResponse = async function* (prompt: string): AsyncGenerator<string, void, unknown> {
-  const mockResponse = `Here's a comprehensive explanation of ${prompt}:
+  // Simple greetings and casual responses
+  if (prompt.toLowerCase().match(/^(hi|hello|hey|good morning|good afternoon|good evening)$/i)) {
+    const responses = [
+      "Hello! How can I help you today?",
+      "Hi there! What would you like to know?",
+      "Hey! I'm here to help. What's on your mind?",
+      "Hello! I'm ready to assist you with any questions you have."
+    ];
+    const response = responses[Math.floor(Math.random() * responses.length)];
+    
+    for (const word of response.split(' ')) {
+      yield word + ' ';
+      await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 50));
+    }
+    return;
+  }
+
+  // Technical questions get detailed responses
+  if (prompt.toLowerCase().includes('react') || prompt.toLowerCase().includes('javascript') || prompt.toLowerCase().includes('typescript') || prompt.toLowerCase().includes('code')) {
+    const mockResponse = `Here's a comprehensive explanation of ${prompt}:
 
 **Key Concepts:**
 
@@ -32,11 +51,33 @@ const example: Example = {
 
 This should give you a solid foundation to work with!`;
 
-  const words = mockResponse.split(' ');
+    const words = mockResponse.split(' ');
+    
+    for (let i = 0; i < words.length; i++) {
+      yield words[i] + (i < words.length - 1 ? ' ' : '');
+      await new Promise(resolve => setTimeout(resolve, 50 + Math.random() * 100));
+    }
+    return;
+  }
+
+  // General questions get moderate responses
+  const generalResponse = `I understand you're asking about "${prompt}". 
+
+Here's what I can tell you:
+
+This is an interesting topic that touches on several important areas. Let me break it down for you:
+
+1. **Main Points**: The core concepts you should know
+2. **Practical Applications**: How this applies in real situations
+3. **Next Steps**: What you might want to explore further
+
+Is there a specific aspect you'd like me to dive deeper into?`;
+
+  const words = generalResponse.split(' ');
   
   for (let i = 0; i < words.length; i++) {
     yield words[i] + (i < words.length - 1 ? ' ' : '');
-    await new Promise(resolve => setTimeout(resolve, 50 + Math.random() * 100));
+    await new Promise(resolve => setTimeout(resolve, 80 + Math.random() * 70));
   }
 };
 

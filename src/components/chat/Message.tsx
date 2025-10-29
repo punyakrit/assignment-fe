@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { Reply, MoreVertical, ThumbsUp, ThumbsDown, Copy, Edit, Trash2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { ChatMessage as ChatMessageType } from '@/lib/gemini';
 import { formatTimestamp } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
@@ -97,9 +99,13 @@ export default function Message({ message, onReply, onEdit, onDelete, depth = 0 
                 </span>
               )}
             </div>
-            <p className="text-sm whitespace-pre-wrap">
-              {message.content}
-            </p>
+            <div className="prose prose-sm max-w-none dark:prose-invert text-sm whitespace-pre-wrap">
+              <ReactMarkdown 
+                remarkPlugins={[remarkGfm]}
+              >
+                {message.content || ''}
+              </ReactMarkdown>
+            </div>
           </div>
           
           <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">

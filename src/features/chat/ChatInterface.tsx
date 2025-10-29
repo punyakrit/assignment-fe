@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Send, Loader2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -172,9 +174,13 @@ export function ChatInterface({
                             {new Date(message.timestamp).toLocaleTimeString()}
                           </span>
                         </div>
-                        <p className="text-sm whitespace-pre-wrap">
-                          {message.content}
-                        </p>
+                        <div className="prose prose-sm max-w-none dark:prose-invert text-sm whitespace-pre-wrap">
+                          <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]}
+                          >
+                            {message.content || ''}
+                          </ReactMarkdown>
+                        </div>
                       </div>
                     </div>
                   </Card>
