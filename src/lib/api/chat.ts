@@ -18,8 +18,39 @@ export const generateStreamingResponse = async function* (prompt: string): Async
     return;
   }
 
+  // Search-related queries
+  if (prompt.toLowerCase().includes('search result') || prompt.toLowerCase().includes('search for')) {
+    const searchTerm = prompt.replace(/search result for|search for/gi, '').replace(/"/g, '').trim();
+    const response = `I found some information about "${searchTerm}":
+
+**Quick Overview:**
+This appears to be a search query. Let me help you find what you're looking for.
+
+**What I can help with:**
+- Explain concepts related to "${searchTerm}"
+- Provide examples and use cases
+- Answer specific questions about the topic
+- Help you dive deeper into any particular aspect
+
+**Next Steps:**
+Could you be more specific about what you'd like to know about "${searchTerm}"? For example:
+- Are you looking for a definition or explanation?
+- Do you need practical examples?
+- Are you trying to solve a specific problem?
+
+I'm here to help you get the exact information you need!`;
+
+    const words = response.split(' ');
+    
+    for (let i = 0; i < words.length; i++) {
+      yield words[i] + (i < words.length - 1 ? ' ' : '');
+      await new Promise(resolve => setTimeout(resolve, 60 + Math.random() * 80));
+    }
+    return;
+  }
+
   // Technical questions get detailed responses
-  if (prompt.toLowerCase().includes('react') || prompt.toLowerCase().includes('javascript') || prompt.toLowerCase().includes('typescript') || prompt.toLowerCase().includes('code')) {
+  if (prompt.toLowerCase().includes('react') || prompt.toLowerCase().includes('javascript') || prompt.toLowerCase().includes('typescript') || prompt.toLowerCase().includes('code') || prompt.toLowerCase().includes('programming') || prompt.toLowerCase().includes('development')) {
     const mockResponse = `Here's a comprehensive explanation of ${prompt}:
 
 **Key Concepts:**
@@ -60,18 +91,59 @@ This should give you a solid foundation to work with!`;
     return;
   }
 
-  // General questions get moderate responses
-  const generalResponse = `I understand you're asking about "${prompt}". 
+  // Questions about specific topics
+  if (prompt.toLowerCase().includes('what is') || prompt.toLowerCase().includes('how does') || prompt.toLowerCase().includes('explain')) {
+    const topic = prompt.replace(/what is|how does|explain/gi, '').trim();
+    const response = `Great question about "${topic}"!
 
-Here's what I can tell you:
+**What it is:**
+This is a fascinating topic that many people are curious about. Let me break it down for you in simple terms.
 
-This is an interesting topic that touches on several important areas. Let me break it down for you:
+**Key Points:**
+- **Definition**: A clear explanation of what "${topic}" means
+- **How it works**: The basic mechanics and principles
+- **Why it matters**: The importance and real-world applications
+- **Examples**: Practical instances you can relate to
 
-1. **Main Points**: The core concepts you should know
-2. **Practical Applications**: How this applies in real situations
-3. **Next Steps**: What you might want to explore further
+**Real-world applications:**
+- How it's used in everyday life
+- Industries that rely on it
+- Common use cases and scenarios
 
-Is there a specific aspect you'd like me to dive deeper into?`;
+**Getting started:**
+If you want to learn more about "${topic}", I'd recommend starting with the basics and then exploring specific areas that interest you most.
+
+Would you like me to dive deeper into any particular aspect of "${topic}"?`;
+
+    const words = response.split(' ');
+    
+    for (let i = 0; i < words.length; i++) {
+      yield words[i] + (i < words.length - 1 ? ' ' : '');
+      await new Promise(resolve => setTimeout(resolve, 70 + Math.random() * 60));
+    }
+    return;
+  }
+
+  // General questions get helpful responses
+  const generalResponse = `I'd be happy to help you with "${prompt}"!
+
+**Let me understand what you're looking for:**
+This seems like an interesting topic. To give you the most helpful response, let me break this down:
+
+**What I can help with:**
+- **Explanations**: Clear, easy-to-understand explanations
+- **Examples**: Practical examples and use cases
+- **Step-by-step guides**: If you need to do something specific
+- **Resources**: Links to helpful materials and documentation
+
+**To give you the best answer:**
+Could you tell me a bit more about:
+- What specifically you'd like to know?
+- What's your current level of experience with this topic?
+- Are you looking for a quick overview or detailed information?
+
+**I'm here to help!**
+Feel free to ask follow-up questions or let me know if you'd like me to focus on a particular aspect.`;
 
   const words = generalResponse.split(' ');
   
