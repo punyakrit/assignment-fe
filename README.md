@@ -1,36 +1,192 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Chat Interface
+
+A modern, full-featured AI chat interface built with Next.js, featuring server-side rendering, autocomplete search, and nested comment functionality.
+
+## Features
+
+- 🤖 **AI Integration**: Powered by Google Gemini AI
+- 🔍 **Autocomplete Search**: Smart search with suggestions and debouncing
+- 💬 **Nested Comments**: Threaded conversations with reply functionality
+- ⚡ **Server-Side Rendering**: Fast initial page loads with Next.js SSR
+- 📱 **Responsive Design**: Mobile-first design with Tailwind CSS
+- 🎨 **Modern UI**: Clean, intuitive interface with smooth animations
+- 💾 **Local Storage**: Persistent conversation history
+- 🔄 **Real-time Updates**: Live message updates and typing indicators
+
+## Tech Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **AI**: Google Gemini API
+- **Icons**: Lucide React
+- **State Management**: React Hooks + Local Storage
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm or yarn
+- Google Gemini API key
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd assignment-fe
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Add your Gemini API key to `.env.local`:
+```
+NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key_here
+```
 
-## Learn More
+5. Run the development server:
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   │   ├── chat/          # Chat API endpoint
+│   │   └── search/        # Search API endpoint
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Home page
+├── components/            # React components
+│   ├── chat/              # Chat-related components
+│   │   ├── ChatInterface.tsx
+│   │   └── Message.tsx
+│   ├── layout/            # Layout components
+│   │   ├── Header.tsx
+│   │   └── Sidebar.tsx
+│   ├── pages/             # Page components
+│   │   └── ChatPage.tsx
+│   ├── search/            # Search components
+│   │   └── AutocompleteSearch.tsx
+│   └── ui/                # UI components
+│       └── LoadingSpinner.tsx
+└── lib/                   # Utilities and services
+    ├── gemini.ts          # Gemini AI integration
+    └── utils.ts           # Utility functions
+```
 
-## Deploy on Vercel
+## Key Features Explained
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Server-Side Rendering (SSR)
+- Initial page load is server-rendered for better SEO and performance
+- API routes handle AI requests server-side
+- Suspense boundaries for loading states
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Autocomplete Search
+- Debounced search input with 300ms delay
+- Keyboard navigation (arrow keys, enter, escape)
+- Categorized suggestions (recent, trending, suggestions)
+- Real-time filtering of search results
+
+### Nested Comments
+- Threaded conversation system
+- Maximum depth of 3 levels to prevent deep nesting
+- Reply functionality with proper parent-child relationships
+- Collapsible reply threads
+
+### State Management
+- React hooks for local state management
+- Local storage for conversation persistence
+- Optimistic updates for better UX
+
+## API Endpoints
+
+### POST /api/chat
+Send a message to the AI and get a response.
+
+**Request:**
+```json
+{
+  "message": "Hello, how are you?"
+}
+```
+
+**Response:**
+```json
+{
+  "response": "Hello! I'm doing well, thank you for asking..."
+}
+```
+
+### GET /api/search?q=query
+Get search suggestions for a given query.
+
+**Response:**
+```json
+{
+  "suggestions": [
+    {
+      "id": "1",
+      "text": "How to implement authentication in Next.js?",
+      "category": "suggestion"
+    }
+  ]
+}
+```
+
+## Customization
+
+### Styling
+The app uses Tailwind CSS for styling. You can customize the design by:
+- Modifying `src/app/globals.css` for global styles
+- Updating component classes in individual components
+- Extending the Tailwind config in `tailwind.config.js`
+
+### AI Model
+To use a different AI model, update the configuration in `src/lib/gemini.ts`:
+```typescript
+export const geminiModel = genAI.getGenerativeModel({ 
+  model: 'gemini-pro' // Change this to your preferred model
+});
+```
+
+## Performance Optimizations
+
+- Debounced search input to reduce API calls
+- Lazy loading with React Suspense
+- Optimized re-renders with proper key props
+- Local storage caching for conversations
+- Efficient state updates with functional setState
+
+## Browser Support
+
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
