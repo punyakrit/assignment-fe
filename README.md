@@ -1,192 +1,202 @@
-# AI Chat Interface
+# 🧠 AI Chat Interface - Claude & Perplexity Inspired
 
-A modern, full-featured AI chat interface built with Next.js, featuring server-side rendering, autocomplete search, and nested comment functionality.
+A modern, feature-rich AI chat application built with Next.js 14+, TypeScript, and shadcn/ui. This project replicates the elegant user experience of Claude and Perplexity AI with advanced features like streaming responses, artifacts, intelligent search, and more.
 
-## Features
+## ✨ Features
 
-- 🤖 **AI Integration**: Powered by Google Gemini AI
-- 🔍 **Autocomplete Search**: Smart search with suggestions and debouncing
-- 💬 **Nested Comments**: Threaded conversations with reply functionality
-- ⚡ **Server-Side Rendering**: Fast initial page loads with Next.js SSR
-- 📱 **Responsive Design**: Mobile-first design with Tailwind CSS
-- 🎨 **Modern UI**: Clean, intuitive interface with smooth animations
-- 💾 **Local Storage**: Persistent conversation history
-- 🔄 **Real-time Updates**: Live message updates and typing indicators
+### 💬 **Advanced Chat Interface**
+- **Streaming Responses**: Real-time token-by-token streaming with smooth animations
+- **Claude-style Artifacts**: Inline rich blocks (code, markdown, tables) with expand/collapse functionality
+- **Sticky Question Header**: Perplexity-style pinned question header when scrolling long responses
+- **Message Actions**: Copy, regenerate, and edit functionality for all messages
+- **Local Persistence**: Complete chat history saved across browser sessions
 
-## Tech Stack
+### 🔍 **Intelligent Search & Autocomplete**
+- **Server-Side Search**: Mock API integration with React Query caching
+- **Real-time Autocomplete**: Character highlighting and keyboard navigation (↑↓↩Esc)
+- **Mentions Support**: Type "@" to trigger people search with 1M+ placeholder names
+- **Client-Side Caching**: Optimized performance with intelligent cache management
 
-- **Framework**: Next.js 14 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **AI**: Google Gemini API
-- **Icons**: Lucide React
-- **State Management**: React Hooks + Local Storage
+### ⚙️ **System Quality & Architecture**
+- **Clean Architecture**: Modular folder structure with features/, hooks/, types/, lib/
+- **React Query Integration**: Advanced state management and caching
+- **Command Menu**: ⌘K shortcut for quick actions (New Chat, Clear History, Settings)
+- **Responsive Design**: Fully responsive with elegant black & white theme
+- **Error Handling**: Graceful error states and loading indicators
 
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
-
 - Node.js 18+ 
-- npm or yarn
-- Google Gemini API key
+- npm or pnpm
 
 ### Installation
 
-1. Clone the repository:
 ```bash
+# Clone the repository
 git clone <repository-url>
 cd assignment-fe
-```
 
-2. Install dependencies:
-```bash
+# Install dependencies
 npm install
-```
+# or
+pnpm install
 
-3. Set up environment variables:
-```bash
+# Set up environment variables
 cp .env.example .env.local
-```
+# Add your API keys to .env.local
 
-4. Add your Gemini API key to `.env.local`:
-```
-NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key_here
-```
-
-5. Run the development server:
-```bash
+# Start development server
 npm run dev
+# or
+pnpm dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Visit [http://localhost:3000](http://localhost:3000) to see the application.
 
-## Project Structure
+## 🏗️ Architecture
 
+### Folder Structure
 ```
 src/
 ├── app/                    # Next.js App Router
-│   ├── api/               # API routes
-│   │   ├── chat/          # Chat API endpoint
-│   │   └── search/        # Search API endpoint
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Home page
-├── components/            # React components
-│   ├── chat/              # Chat-related components
-│   │   ├── ChatInterface.tsx
-│   │   └── Message.tsx
-│   ├── layout/            # Layout components
-│   │   ├── Header.tsx
-│   │   └── Sidebar.tsx
-│   ├── pages/             # Page components
-│   │   └── ChatPage.tsx
-│   ├── search/            # Search components
-│   │   └── AutocompleteSearch.tsx
-│   └── ui/                # UI components
-│       └── LoadingSpinner.tsx
-└── lib/                   # Utilities and services
-    ├── gemini.ts          # Gemini AI integration
-    └── utils.ts           # Utility functions
+├── components/            # Reusable UI components
+│   ├── ui/               # shadcn/ui components
+│   ├── chat/             # Chat-specific components
+│   └── search/           # Search components
+├── features/             # Feature-based modules
+│   ├── chat/             # Chat functionality
+│   └── search/           # Search functionality
+├── hooks/                # Custom React hooks
+├── lib/                  # Utilities and configurations
+│   ├── api/              # API functions
+│   └── providers/        # Context providers
+└── types/                # TypeScript type definitions
 ```
 
-## Key Features Explained
+### Key Components
 
-### Server-Side Rendering (SSR)
-- Initial page load is server-rendered for better SEO and performance
-- API routes handle AI requests server-side
-- Suspense boundaries for loading states
+- **ChatInterface**: Main chat component with streaming and artifacts
+- **StreamingMessage**: Real-time message display with animations
+- **ArtifactBlock**: Expandable code blocks and rich content
+- **EnhancedSearchInput**: Intelligent search with autocomplete
+- **StickyHeader**: Perplexity-style pinned question header
+- **CommandMenu**: ⌘K command palette for quick actions
 
-### Autocomplete Search
-- Debounced search input with 300ms delay
-- Keyboard navigation (arrow keys, enter, escape)
-- Categorized suggestions (recent, trending, suggestions)
-- Real-time filtering of search results
+## 🎨 Design System
 
-### Nested Comments
-- Threaded conversation system
-- Maximum depth of 3 levels to prevent deep nesting
-- Reply functionality with proper parent-child relationships
-- Collapsible reply threads
+### Theme
+- **Color Scheme**: Elegant black & white with subtle grays
+- **Typography**: Clean, readable fonts with proper hierarchy
+- **Spacing**: Consistent spacing using Tailwind's design tokens
+- **Animations**: Smooth transitions and micro-interactions
 
-### State Management
-- React hooks for local state management
-- Local storage for conversation persistence
-- Optimistic updates for better UX
+### Responsive Breakpoints
+- **Mobile**: < 768px
+- **Tablet**: 768px - 1024px  
+- **Desktop**: > 1024px
 
-## API Endpoints
+## 🔧 Technical Implementation
 
-### POST /api/chat
-Send a message to the AI and get a response.
-
-**Request:**
-```json
-{
-  "message": "Hello, how are you?"
-}
-```
-
-**Response:**
-```json
-{
-  "response": "Hello! I'm doing well, thank you for asking..."
-}
-```
-
-### GET /api/search?q=query
-Get search suggestions for a given query.
-
-**Response:**
-```json
-{
-  "suggestions": [
-    {
-      "id": "1",
-      "text": "How to implement authentication in Next.js?",
-      "category": "suggestion"
-    }
-  ]
-}
-```
-
-## Customization
-
-### Styling
-The app uses Tailwind CSS for styling. You can customize the design by:
-- Modifying `src/app/globals.css` for global styles
-- Updating component classes in individual components
-- Extending the Tailwind config in `tailwind.config.js`
-
-### AI Model
-To use a different AI model, update the configuration in `src/lib/gemini.ts`:
+### Streaming Responses
 ```typescript
-export const geminiModel = genAI.getGenerativeModel({ 
-  model: 'gemini-pro' // Change this to your preferred model
+// Token-by-token streaming with realistic delays
+for await (const token of generateStreamingResponse(prompt)) {
+  setStreamingContent(prev => prev + token);
+  await new Promise(resolve => setTimeout(resolve, 50 + Math.random() * 100));
+}
+```
+
+### Artifacts System
+```typescript
+// Extract and display rich content blocks
+const artifacts = generateArtifacts(content);
+// Supports: code blocks, markdown, tables, images
+```
+
+### React Query Integration
+```typescript
+// Intelligent caching and state management
+const { data, isLoading } = useQuery({
+  queryKey: ['search', query],
+  queryFn: () => mockSearchResults(query),
+  staleTime: 5 * 60 * 1000,
 });
 ```
 
-## Performance Optimizations
+## 🚀 Deployment
 
-- Debounced search input to reduce API calls
-- Lazy loading with React Suspense
-- Optimized re-renders with proper key props
-- Local storage caching for conversations
-- Efficient state updates with functional setState
+### Vercel (Recommended)
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-## Browser Support
+# Deploy
+vercel
 
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+# Set environment variables in Vercel dashboard
+```
 
-## Contributing
+### Other Platforms
+The app can be deployed to any platform that supports Next.js:
+- Netlify
+- Railway
+- AWS Amplify
+- DigitalOcean App Platform
+
+## 🧪 Testing
+
+```bash
+# Run type checking
+npm run type-check
+
+# Run linting
+npm run lint
+
+# Build for production
+npm run build
+```
+
+## 📝 Environment Variables
+
+Create a `.env.local` file:
+
+```env
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Optional: Analytics
+NEXT_PUBLIC_ANALYTICS_ID=your_analytics_id
+```
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
-## License
+## 📄 License
 
-MIT License - see LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Claude AI** - Inspiration for the artifact system and UI design
+- **Perplexity AI** - Inspiration for the sticky header and search experience
+- **shadcn/ui** - Beautiful, accessible component library
+- **Next.js Team** - Amazing React framework
+- **TanStack Query** - Powerful data fetching and caching
+
+## 📞 Support
+
+If you have any questions or need help, please:
+- Open an issue on GitHub
+- Check the documentation
+- Review the code comments
+
+---
+
+**Built with ❤️ using Next.js, TypeScript, and shadcn/ui**

@@ -91,6 +91,11 @@ export default function Message({ message, onReply, onEdit, onDelete, depth = 0 
               <span className="text-xs text-muted-foreground">
                 {formatTimestamp(message.timestamp)}
               </span>
+              {message.role === 'user' && (
+                <span className="text-xs text-green-600 dark:text-green-400">
+                  ✓ Saved
+                </span>
+              )}
             </div>
             <p className="text-sm whitespace-pre-wrap">
               {message.content}

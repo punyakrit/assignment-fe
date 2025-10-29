@@ -53,6 +53,7 @@ export default function ChatPage() {
   }, [conversations, searchQuery]);
 
   const handleNewMessage = (message: ChatMessage) => {
+    console.log('Adding new message:', message);
     const newConversations = [...conversations];
     if (newConversations[activeConversation]) {
       newConversations[activeConversation] = [...newConversations[activeConversation], message];
@@ -62,7 +63,11 @@ export default function ChatPage() {
     setConversations(newConversations);
     
     // Update current messages immediately for real-time display
-    setCurrentMessages(prev => [...prev, message]);
+    setCurrentMessages(prev => {
+      const updated = [...prev, message];
+      console.log('Updated current messages:', updated);
+      return updated;
+    });
   };
 
   const handleEditMessage = (messageId: string, newContent: string) => {
@@ -143,7 +148,16 @@ export default function ChatPage() {
           <ChatInterface
             messages={currentMessages}
             onNewMessage={handleNewMessage}
-            onReply={handleNewMessage}
+            onReply={(parentId, content) => {
+              const replyMessage: ChatMessage = {
+                id: generateId(),
+                content,
+                role: 'user',
+                timestamp: new Date(),
+                parentId,
+              };
+              handleNewMessage(replyMessage);
+            }}
             onEditMessage={handleEditMessage}
             onDeleteMessage={handleDeleteMessage}
           />

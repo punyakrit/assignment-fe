@@ -27,6 +27,7 @@ export default function ChatInterface({
 }: ChatInterfaceProps) {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -48,9 +49,12 @@ export default function ChatInterface({
       timestamp: new Date(),
     };
 
+    // Immediately add user message to UI
+    setIsSaving(true);
     onNewMessage(userMessage);
     setInput('');
     setIsLoading(true);
+    setIsSaving(false);
 
     try {
       const response = await generateResponse(input.trim());
@@ -60,8 +64,10 @@ export default function ChatInterface({
         role: 'assistant',
         timestamp: new Date(),
       };
+      // Add AI response to UI
       onNewMessage(aiMessage);
     } catch (error) {
+      console.error('Error generating AI response:', error);
       const errorMessage: ChatMessage = {
         id: generateId(),
         content: 'Sorry, I encountered an error. Please try again.',
@@ -148,11 +154,13 @@ export default function ChatInterface({
           </div>
           <Button
             type="submit"
-            disabled={!input.trim() || isLoading}
+            disabled={!input.trim() || isLoading || isSaving}
             size="icon"
             className="h-11 w-11"
           >
             {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : isSaving ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <Send className="h-4 w-4" />
